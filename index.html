@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>Socket.IO chat</title>
+    <!-- CSS -->
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="framework/css/bootstrap.min.css"
+    />
+    <link rel="stylesheet" href="static/css/myStyle.css" />
+    <link
+      rel="stylesheet"
+      href="framework/bootstrap-icons/font/bootstrap-icons.css"
+    />
+    <!-- JS -->
+    <script src="framework/js/vue.global.js"></script>
+    <script src="rootComponent.js" type="module" defer></script>
+    <script src="framework/js/vue-router.global.js"></script>
+
+    <!-- Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Socket io client -->
+    <script src="/socket.io/socket.io.js"></script>
+
+    <!-- Decode jwt token -->
+    <script src="https://cdn.jsdelivr.net/npm/jwt-decode/build/jwt-decode.min.js"></script>
+    
+  </head>
+  <body>
+    <div id="app">
+    <navbar-component :authenticated="authenticated" @authenticated="setAuthenticated"></navbar-component>
+    
+    <router-view @authenticated="setAuthenticated"></router-view> 
+
+ 
+    <!-- Footer -->
+    <footer class="bg-light text-center py-3 mt-4">
+      <div class="container">
+        <small>&copy; 2024 SocialApp. All rights reserved.</small>
+      </div>
+    </footer>
+          
+
+    </div>
+  </body>
+</html>

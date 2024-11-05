@@ -1,0 +1,11 @@
+:root{
+    --bs-body-font-family: 'Roboto', sans-serif;
+}
+
+
+.bg-register {
+    background-image: url('../img/register-background.jpg');
+    background-size: cover;
+    background-position: center;
+    height: 100vh; 
+}
