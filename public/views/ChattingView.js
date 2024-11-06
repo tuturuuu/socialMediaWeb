@@ -1,17 +1,16 @@
-export default{
-    template:`
+export default {
+    template: `
   <!-- Chat Section -->
-  <div class="container-fluid">
-    <div class="row vh-100">
+    <div class="row"  >
       
       <!-- Sidebar - Contacts List -->
-      <div class="col-md-4 col-lg-3 border-end bg-light d-flex flex-column">
+      <div class="col-md-4 col-lg-3 border-end bg-light d-none d-md-flex flex-column">
         <h4 class="text-center py-3">Contacts</h4>
         <div class="list-group overflow-auto flex-grow-1">
           <a href="#" class="list-group-item list-group-item-action d-flex align-items-center">
             <img src="https://via.placeholder.com/40" class="rounded-circle me-3" alt="User">
             <div>
-              <h6 class="mb-0">User 1</h6>
+              <h6 class="mb-0">Chatting with other</h6>
               <small class="text-muted">Last message snippet...</small>
             </div>
           </a>
@@ -20,33 +19,37 @@ export default{
       </div>
 
       <!-- Chat View -->
-      <div class="col-md-8 col-lg-9 d-flex flex-column">
-        <div class="border-bottom p-3 d-flex align-items-center">
+      <div class="col-12 col-md-8 col-lg-9 h-100 overflow-auto" style="max-height: 80vh;" ref="chatView">
+        
+      <div class="border-bottom p-3 d-flex align-items-center">
           <img src="https://via.placeholder.com/50" class="rounded-circle me-3" alt="Chatting with">
-          <h5 class="mb-0">User 1</h5>
+          <h5 class="mb-0">Chatting with other</h5>
         </div>
 
         <!-- Messages Area -->
-        <div class="flex-grow-1 overflow-auto p-3" id="chatArea">
+        <div class="flex-grow-1 p-3" id="chatArea" v-for="message in messages" >
+
           <!-- Received Message -->
-          <div class="d-flex align-items-start mb-3">
-            <img src="https://via.placeholder.com/40" class="rounded-circle me-2" alt="User">
+          <div class="d-flex align-items-start mb-3" v-if="message.senderId._id !== id">
+            <img v-if="message.senderId.gender == 'male'" src="static/img//website/profile_male.png" class="rounded-circle me-3" alt="User Profile" width="40" height="40">
+            <img v-if="message.senderId.gender == 'female'" src="static/img//website/profile_female.png" class="rounded-circle me-3" alt="User Profile" width="40" height="40">
+            <img v-if="message.senderId.gender == 'other'" src="static/img//website/profile_other.png" class="rounded-circle me-3" alt="User Profile" width="40" height="40">
             <div class="p-3 bg-light rounded-3">
-              <p class="mb-0">Hello! How are you?</p>
-              <small class="text-muted">10:30 AM</small>
+              <p class="mb-0"><strong>{{ message.senderId.username }}</strong>: {{ message.content }}</p>
+              <small class="text-muted">{{ new Date(message.createdAt).toLocaleString('en-US', { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }) }}</small>
             </div>
           </div>
 
           <!-- Sent Message -->
-
-          <div class="d-flex align-items-end flex-row-reverse mb-3" v-for="message in messages">
-            <img src="https://via.placeholder.com/40" class="rounded-circle ms-2" alt="Me">
+          <div class="d-flex align-items-end flex-row-reverse mb-3" v-if="message.senderId._id === id">
+            <img v-if="message.senderId.gender == 'male'" src="static/img//website/profile_male.png" class="rounded-circle me-3" alt="User Profile" width="40" height="40">
+            <img v-if="message.senderId.gender == 'female'" src="static/img//website/profile_female.png" class="rounded-circle me-3" alt="User Profile" width="40" height="40">
+            <img v-if="message.senderId.gender == 'other'" src="static/img//website/profile_other.png" class="rounded-circle me-3" alt="User Profile" width="40" height="40">
             <div class="p-3 bg-primary text-white rounded-3">
-              <p class="mb-0">{{message}}</p>
-              <small class="text-white-50">10:32 AM</small>
+              <p class="mb-0"><strong>Me</strong>: {{ message.content }}</p>
+              <small class="text-white-50">{{ new Date(message.createdAt).toLocaleString('en-US', { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }) }}</small>
             </div>
           </div>
-
         </div>
 
         <!-- Message Input -->
@@ -58,40 +61,47 @@ export default{
         </div>
       </div>
     </div>
-  </div>
     `,
-    data(){
-        return{
+    data() {
+        return {
             inputMessage: '',
             messages: [],
-            socket: null
+            socket: null,
+            id: jwt_decode(localStorage.getItem("token")).id,
         }
     },
-    methods:{
-        emitMessage(e){
+    methods: {
+        emitMessage(e) {
             e.preventDefault()
-            if(this.inputMessage){
-                this.socket.emit('chat message', this.inputMessage)
+            if (this.inputMessage) {
+                this.socket.emit('chat message', this.inputMessage, this.id)
                 this.inputMessage = ''
             }
         }
     },
-    mounted(){
+    mounted() {
         this.socket = io();
 
         console.log('Connected to server:', this.socket.connected);
 
         this.socket.on('connect', () => {
-          console.log('Connected to server!');
+            console.log('Connected to server!');
         });
-        
+
         this.socket.on('disconnect', () => {
-          console.log('Disconnected from server!');
+            console.log('Disconnected from server!');
         });
 
         this.socket.on('chat message', (msg) => {
             this.messages.push(msg);
-            window.scrollTo(0, document.body.scrollHeight);
         });
+    },
+    updated() {
+      const chatView = this.$refs.chatView;
+      if (chatView) {
+        chatView.scrollTop = chatView.offsetHeight;
+      }
     }
+
 }
+

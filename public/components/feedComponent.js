@@ -13,7 +13,7 @@ export default {
                 <option value="byMe">By me</option>
               </select>
               <input v-model="search" class="form-control me-2" type="search" placeholder="Search" aria-label="Search" >
-              <button class="btn btn-primary" type="submit">Search</button>
+
             </form>
           </div>
         </div>

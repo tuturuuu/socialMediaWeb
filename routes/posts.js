@@ -7,7 +7,7 @@ const auth = require("../middleware/auth");
 router.get("/all", auth, async (req, res) => {
   try {
     const posts = await Posts.find()
-      .populate("userId", "username");
+      .populate("userId", ["username", "gender"]);
     return res.status(200).json(posts);
   } catch (error) {
     return res.status(500).json({ message: error.message });
@@ -24,8 +24,7 @@ router.post("", auth, async (req, res) => {
     }
     const newPost = new Posts({ content, userId: id });
     await newPost.save();
-    const populatedNewPost = await newPost
-      .populate("userId", "username");
+    const populatedNewPost = await newPost.populate("userId", ["username", "gender"]);
     return res.status(200).json({ message: "Post created successfully", post: populatedNewPost });
   } catch (error) {
     return res.status(500).json({ message: error.message });

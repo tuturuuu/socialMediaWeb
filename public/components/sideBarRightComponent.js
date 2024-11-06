@@ -1,21 +1,151 @@
 export default {
     template: `
     <!-- Suggestions Sidebar -->
+
+    
+      <div class="input-group ">
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Search for people"
+          aria-label="Search"
+          v-model="search"
+        />
+        <button
+          class="btn btn-outline-primary"
+          type="button"
+          id="button-addon2"
+          @click="searchUsers"
+        >
+          <i class="bi bi-search"></i>
+        </button>
+      </div>
+
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-mdb-toggle="collapse"
+        data-mdb-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+        @click="searchPosts()"
+      >
+      </button>
+
         <div class="card">
           <div class="card-body">
             <h5 class="card-title">Suggestions</h5>
             <ul class="list-unstyled">
-              <li class="d-flex align-items-center mb-2">
-                <img src="https://via.placeholder.com/40" class="rounded-circle me-3" alt="User">
+              <li v-for="suggestion in suggestions" :key="suggestion._id" class="d-flex align-items-center mb-2">
+                
+                <img v-if="suggestion.gender == 'male'" src="static/img//website/profile_male.png" class="rounded-circle me-3 d-none d-lg-block" alt="User Profile" width="50" height="50">
+                <img v-if="suggestion.gender == 'female'" src="static/img//website/profile_female.png" class="rounded-circle me-3 d-none d-lg-block" alt="User Profile" width="50" height="50">
+                <img v-if="suggestion.gender == 'other' || suggestion.gender == undefined" src="static/img//website/profile_other.png" class="rounded-circle me-3 d-none d-lg-block" alt="User Profile" width="50" height="50">
+               
                 <div>
-                  <h6 class="mb-0">Suggested User</h6>
-                  <small class="text-muted">@username</small>
+                  <h6 class="mb-0">{{ suggestion.username }}</h6>
+                  <small class="text-muted">@{{ suggestion.username }}</small>
                 </div>
-                <button class="btn btn-primary btn-sm ms-auto">Follow</button>
+               
+                <button v-if="suggestion.isFriend" class="btn btn-primary btn-sm ms-auto" @click="unfollow(suggestion._id)">Unfollow</button>
+                <button v-else class="btn btn-primary btn-sm ms-auto" @click="follow(suggestion._id)">Follow</button>
               </li>
               <!-- More suggestions here -->
             </ul>
           </div>
         </div>
-    `
+    `,
+    data(){
+      return {
+        suggestions: [],
+        search: ''
+      }
+    },
+    async mounted(){
+      try {
+        const response = await fetch("/api/user/suggestions/3", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: localStorage.getItem("token"),
+          },
+        });
+        const data = await response.json();
+        const token = localStorage.getItem("token");
+        if (response.ok) {
+          this.suggestions = data
+        }
+
+      } catch (error) {
+        console.log(error)
+      }
+    },
+    methods: {
+      async searchUsers(){
+        try{
+          const response = await fetch(`/api/user/${this.search}`, {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: localStorage.getItem("token"),
+            },
+          });
+          const data = await response.json();
+          if (response.ok) {
+            this.suggestions = data;
+          }
+        } catch(error){
+          console.log(error)
+        }
+      },
+      async follow(id) {
+        try {
+          const response = await fetch(`/api/user/follow/${id}`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: localStorage.getItem("token"),
+            },
+          });
+          const data = await response.json();
+          console.log(data.message)
+          if (response.ok) {
+            this.suggestions = this.suggestions.map(suggestion => {
+              if (suggestion._id === id) {
+                suggestion.isFriend = true;
+              }
+              return suggestion;
+            });
+          }
+        } catch (error) {
+          console.log(error)
+        }
+      },
+
+      async unfollow(id) {
+        try {
+          const response = await fetch(`/api/user/unfollow/${id}`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: localStorage.getItem("token"),
+            },
+          });
+          const data = await response.json();
+          if (response.ok) {
+            this.suggestions = this.suggestions.map(suggestion => {
+              if (suggestion._id === id) {
+                suggestion.isFriend = false;
+              }
+              return suggestion;
+            });
+          }
+          console.log(data.message)
+        } catch (error) {
+          console.log(error);
+        }
+      }
+      
+    }
 }

@@ -18,6 +18,7 @@
     <script src="framework/js/vue.global.js"></script>
     <script src="rootComponent.js" type="module" defer></script>
     <script src="framework/js/vue-router.global.js"></script>
+    <script src="framework/js/bootstrap.min.js"></script>
 
     <!-- Font -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -33,6 +34,9 @@
     <!-- Decode jwt token -->
     <script src="https://cdn.jsdelivr.net/npm/jwt-decode/build/jwt-decode.min.js"></script>
     
+    <!-- Paginate -->
+     <script src="framework/js/vue-paginate-next.js"></script>
+
   </head>
   <body>
     <div id="app">
@@ -40,15 +44,7 @@
     
     <router-view @authenticated="setAuthenticated"></router-view> 
 
- 
-    <!-- Footer -->
-    <footer class="bg-light text-center py-3 mt-4">
-      <div class="container">
-        <small>&copy; 2024 SocialApp. All rights reserved.</small>
-      </div>
-    </footer>
-          
-
+    <footer-component></footer-component>
     </div>
   </body>
 </html>

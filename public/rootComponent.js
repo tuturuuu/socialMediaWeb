@@ -4,9 +4,7 @@ import RegisterView from './views/RegisterView.js'
 import LoginView from './views/LoginView.js'
 import Home from './views/HomeView.js'
 import ProfileView from './views/ProfileView.js'
-import sideBarComponent from './components/sideBarComponent.js'
-import feedComponent from './components/feedComponent.js'
-import sideBarRightComponent from './components/sideBarRightComponent.js'
+import footerComponent from './components/footerComponent.js'
 
 const app = Vue.createApp({
     data(){
@@ -17,7 +15,7 @@ const app = Vue.createApp({
     methods: {
         setAuthenticated(status) {
             this.authenticated = status;
-        }
+        },
     }, 
     mounted(){
         if(localStorage.getItem('token')){
@@ -31,9 +29,7 @@ const app = Vue.createApp({
 })
 
 app.component('navbar-component', navBarComponent)
-app.component('sidebar-left-component', sideBarComponent)
-app.component('feed-component', feedComponent)
-app.component('sidebar-right-component', sideBarRightComponent)
+app.component('footer-component', footerComponent)
 
 const routes = [
     { path: '/chatting', component: ChattingView, meta: { requiresAuth: true } },

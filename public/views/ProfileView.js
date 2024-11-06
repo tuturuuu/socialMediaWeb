@@ -8,13 +8,13 @@ export default {
         <div class="card">
           <div class="card-body">
             <!-- Profile Picture Update -->
-            <div class="text-center mb-4">
-              <img src="https://via.placeholder.com/150" alt="Profile Picture" class="rounded-circle mb-2" style="width: 150px; height: 150px;">
-              <div>
-                <label for="profilePicture" class="form-label">Change Profile Picture</label>
-                <input  type="file" class="form-control" id="profilePicture">
-              </div>
+            <div class="text-center mb-4">            
+              <img v-if="gender == 'male'" src="static/img//website/profile_male.png" class="rounded-circle mb-2" alt="User Profile" width="150" height="150">
+              <img v-if="gender == 'female'" src="static/img//website/profile_female.png" class="rounded-circle mb-2" alt="User Profile"  width="150" height="150">
+              <img v-if="gender == 'other'" src="static/img//website/profile_other.png" class="rounded-circle mb-2" alt="User Profile"  width="150" height="150">
+            
             </div>
+
 
             <!-- Profile Form -->
             <form @submit="submitUpdate">

@@ -4,7 +4,9 @@ export default {
         <!-- Profile Section -->
         <div class="card mb-3">
           <div class="card-body text-center">
-            <img src="https://via.placeholder.com/100" class="rounded-circle mb-3" alt="User Profile">
+            <img v-if="gender == 'male'" src="static/img//website/profile_male.png" class="rounded-circle mb-3" alt="User Profile" width="100" height="100">
+            <img v-if="gender == 'female'" src="static/img//website/profile_female.png" class="rounded-circle mb-3" alt="User Profile"  width="100" height="100">
+            <img v-if="gender == 'other' || gender == undefined" src="static/img//website/profile_other.png" class="rounded-circle mb-3" alt="User Profile"  width="100" height="100">
             <h5 class="card-title">{{username}} </h5>
 
             <p v-if="bio == null" class="card-text">Bio goes here...</p>
@@ -29,5 +31,5 @@ export default {
       
     `,
 
-    props: ['username', 'bio']
+    props: ['username', 'bio', 'gender']
 }

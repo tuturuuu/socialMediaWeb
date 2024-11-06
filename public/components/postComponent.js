@@ -2,10 +2,14 @@ export default {
   template: `        
     <div>
       <!-- Post -->
-      <div class="card post-card" v-for="post in filteredPosts.slice().reverse()" :key="post._id">
+      <div class="card post-card" v-for="post in paginatedItems()" :key="post._id">
         <div class="card-body">
           <div class="d-flex">
-            <img src="https://via.placeholder.com/50" class="rounded-circle me-3" alt="User Avatar">
+            
+            <img v-if="post.userId.gender == 'male'" src="static/img//website/profile_male.png" class="rounded-circle me-3" alt="User Profile" width="50" height="50">
+            <img v-if="post.userId.gender == 'female'" src="static/img//website/profile_female.png" class="rounded-circle  me-3" alt="User Profile"  width="50" height="50">
+            <img v-if="post.userId.gender == 'other' || post.userId.gender == undefined" src="static/img//website/profile_other.png" class="rounded-circle me-3" alt="User Profile"  width="50" height="50">
+          
             <div>
               <h6 class="card-title mb-0">{{ post.userId.username }}</h6>
               <small class="text-muted">{{ new Date(post.createdAt).toLocaleString() }}</small>
@@ -31,20 +35,38 @@ export default {
         </div>
       </div>
     </div>
+
+   <paginate
+    v-model="page"
+    :page-count="getPageCount()"
+    :page-range="3"
+    :margin-pages="1"
+    :prev-text="'Previous'"
+    :next-text="'Next'"
+    :container-class="'pagination'"
+    :page-class="'page-item'"
+    :active-class="'active'"
+    class="mt-2"
+  >
+  </paginate>
   `,
+  components: {
+    paginate: VuejsPaginateNext
+  },
+  props: ["posts", "sortBy", "search"],
+  emits: ["update", "delete"],
   data() {
     return {
       errors: {
         content: "",
       },
-      postsByMe: false,
+      perPage: 3,
+      page: 1,
       id: jwt_decode(localStorage.getItem("token")).id,
       debouncedSearch: "",      // Holds the debounced search term
       debounceTimeout: null     // Timeout ID for debouncing
     };
   },
-  props: ["posts", "sortBy", "search"],
-  emits: ["update", "delete"],
   methods: {
     updatePost(post) {
       post.editing = false;
@@ -73,7 +95,16 @@ export default {
       this.debounceTimeout = setTimeout(() => {
         this.debouncedSearch = this.search; // Update with the debounced search term
       }, 300); // Delay in milliseconds
-    }
+    },
+    getPageCount(){
+      return  Math.ceil(this.filteredPosts.length / this.perPage);
+    },
+    paginatedItems(){
+        const start = (this.page -1)*this.perPage;
+        const end = start + this.perPage;
+
+        return this.filteredPosts.slice(start, end);
+    },
   },
   computed: {
     filteredPosts() {
@@ -81,13 +112,13 @@ export default {
       switch (this.sortBy) {
         case "newest":
           this.posts.sort(
-            (a, b) => new Date(a.createdAt) - new Date(b.createdAt)
+            (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
           );
           temp = this.posts;
           break;
         case "oldest":
           this.posts.sort(
-            (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+            (a, b) => new Date(a.createdAt) - new Date(b.createdAt)
           );
           temp = this.posts;
           break;
