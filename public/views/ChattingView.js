@@ -8,7 +8,7 @@ export default {
         <h4 class="text-center py-3">Contacts</h4>
         <div class="list-group overflow-auto flex-grow-1">
           <a href="#" class="list-group-item list-group-item-action d-flex align-items-center">
-            <img src="https://via.placeholder.com/40" class="rounded-circle me-3" alt="User">
+            <img src="static/img//website/profile_other.png" width="40" height="40" class="rounded-circle me-3" alt="User">
             <div>
               <h6 class="mb-0">Chatting with other</h6>
               <small class="text-muted">Last message snippet...</small>
@@ -22,7 +22,7 @@ export default {
       <div class="col-12 col-md-8 col-lg-9 h-100 overflow-auto" style="max-height: 80vh;" ref="chatView">
         
       <div class="border-bottom p-3 d-flex align-items-center">
-          <img src="https://via.placeholder.com/50" class="rounded-circle me-3" alt="Chatting with">
+          <img src="static/img//website/profile_other.png" class="rounded-circle me-3" alt="Chatting with" width="40" height="40">
           <h5 class="mb-0">Chatting with other</h5>
         </div>
 
@@ -33,7 +33,7 @@ export default {
           <div class="d-flex align-items-start mb-3" v-if="message.senderId._id !== id">
             <img v-if="message.senderId.gender == 'male'" src="static/img//website/profile_male.png" class="rounded-circle me-3" alt="User Profile" width="40" height="40">
             <img v-if="message.senderId.gender == 'female'" src="static/img//website/profile_female.png" class="rounded-circle me-3" alt="User Profile" width="40" height="40">
-            <img v-if="message.senderId.gender == 'other'" src="static/img//website/profile_other.png" class="rounded-circle me-3" alt="User Profile" width="40" height="40">
+            <img v-if="message.senderId.gender == 'other' || message.senderId.gender == undefined" src="static/img//website/profile_other.png" class="rounded-circle me-3" alt="User Profile" width="40" height="40">
             <div class="p-3 bg-light rounded-3">
               <p class="mb-0"><strong>{{ message.senderId.username }}</strong>: {{ message.content }}</p>
               <small class="text-muted">{{ new Date(message.createdAt).toLocaleString('en-US', { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }) }}</small>
@@ -44,7 +44,7 @@ export default {
           <div class="d-flex align-items-end flex-row-reverse mb-3" v-if="message.senderId._id === id">
             <img v-if="message.senderId.gender == 'male'" src="static/img//website/profile_male.png" class="rounded-circle me-3" alt="User Profile" width="40" height="40">
             <img v-if="message.senderId.gender == 'female'" src="static/img//website/profile_female.png" class="rounded-circle me-3" alt="User Profile" width="40" height="40">
-            <img v-if="message.senderId.gender == 'other'" src="static/img//website/profile_other.png" class="rounded-circle me-3" alt="User Profile" width="40" height="40">
+            <img v-if="message.senderId.gender == 'other' || message.senderId.gender == undefined" src="static/img//website/profile_other.png" class="rounded-circle me-3" alt="User Profile" width="40" height="40">
             <div class="p-3 bg-primary text-white rounded-3">
               <p class="mb-0"><strong>Me</strong>: {{ message.content }}</p>
               <small class="text-white-50">{{ new Date(message.createdAt).toLocaleString('en-US', { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }) }}</small>
@@ -95,11 +95,14 @@ export default {
         this.socket.on('chat message', (msg) => {
             this.messages.push(msg);
         });
+        this.socket.on('chat init', (msg) => {
+          this.messages = msg;
+      });
     },
     updated() {
       const chatView = this.$refs.chatView;
-      if (chatView) {
-        chatView.scrollTop = chatView.offsetHeight;
+      if (chatView && chatView.scrollHeight > chatView.offsetHeight) {
+        chatView.scrollTop = chatView.scrollHeight;
       }
     }
 

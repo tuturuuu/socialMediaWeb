@@ -76,9 +76,7 @@ io.on("connection", async (socket) => {
     // if the connection state recovery was not successful
     try {
       const messages = await Messages.find({}).populate("senderId", ['username', 'gender'])
-      messages.forEach((message) => {
-        socket.emit('chat message', message);
-      });
+      socket.emit('chat init', messages);
     } catch (e) {
       console.log(e)
       return;
