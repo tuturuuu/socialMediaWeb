@@ -59,7 +59,8 @@ export default {
     data(){
       return {
         suggestions: [],
-        search: ''
+        search: '',
+        id: jwt_decode(localStorage.getItem("token")).id
       }
     },
     async mounted(){
@@ -72,9 +73,8 @@ export default {
           },
         });
         const data = await response.json();
-        const token = localStorage.getItem("token");
         if (response.ok) {
-          this.suggestions = data
+          this.suggestions = data.filter(user => user._id !== this.id);
         }
 
       } catch (error) {
@@ -93,7 +93,7 @@ export default {
           });
           const data = await response.json();
           if (response.ok) {
-            this.suggestions = data;
+            this.suggestions = data.filter(user => user._id !== this.id);
           }
         } catch(error){
           console.log(error)
