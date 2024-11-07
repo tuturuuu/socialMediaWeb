@@ -13,22 +13,22 @@ const { availableParallelism } = require('node:os');
 const cluster = require('node:cluster');
 const { createAdapter, setupPrimary } = require('@socket.io/cluster-adapter');
 
-if (cluster.isPrimary) {
-  const numCPUs = availableParallelism();
-  // create one worker per available core
-  for (let i = 0; i < numCPUs; i++) {
-    cluster.fork({
-      PORT: 3000 + i
-    });
-  }
+// if (cluster.isPrimary) {
+//   const numCPUs = availableParallelism();
+//   // create one worker per available core
+//   for (let i = 0; i < numCPUs; i++) {
+//     cluster.fork({
+//       PORT: 3000 + i
+//     });
+//   }
   
-  // set up the adapter on the primary thread
-  return setupPrimary();
-}
+//   // set up the adapter on the primary thread
+//   return setupPrimary();
+// }
 
 const io = new Server(server, {
   connectionStateRecovery: {},
-  adapter: createAdapter()
+  
 });
 
 mongoose
