@@ -1,7 +1,8 @@
 export default {
-    template: `     <div class="card mb-3">
+    template: `     
+    <div class="card mb-3">
           <div class="card-body">
-            <form class="d-flex" >
+            <form class="d-flex" @submit.prevent>
               <select class="form-select me-2"  v-model="sortBy">
                 <option value="newest">Newest</option>
                 <option value="oldest">Oldest</option>

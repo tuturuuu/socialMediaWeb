@@ -5,16 +5,16 @@ export default {
 <!-- Sidebar - Profile & Trends -->
         <!-- Profile Section -->
         <div class="card mb-3">
-          <miniProfile :username="username" :bio="bio" :gender="gender"></miniProfile>
+          <miniProfile></miniProfile>
         </div>
 
         <trendingTopics></trendingTopics>
       
     `,
     
-    props: ['username', 'bio', 'gender'],
    components: {
   trendingTopics,
   miniProfile  
-}
+},
+
 }
