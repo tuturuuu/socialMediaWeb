@@ -4,7 +4,7 @@ export default {
     <div class="row"  >
       
       <!-- Sidebar - Contacts List -->
-      <div class="col-md-4 col-lg-3 border-end bg-light d-none d-md-flex flex-column">
+      <div class="col-md-4 col-lg-3 border-end d-none d-md-flex flex-column">
         <h4 class="text-center py-3">Contacts</h4>
         <div class="list-group overflow-auto flex-grow-1">
           <a href="#" class="list-group-item list-group-item-action d-flex align-items-center">
@@ -34,7 +34,7 @@ export default {
             <img v-if="message.senderId.gender == 'male'" src="static/img//website/profile_male.png" class="rounded-circle me-3" alt="User Profile" width="40" height="40">
             <img v-if="message.senderId.gender == 'female'" src="static/img//website/profile_female.png" class="rounded-circle me-3" alt="User Profile" width="40" height="40">
             <img v-if="message.senderId.gender == 'other' || message.senderId.gender == undefined" src="static/img//website/profile_other.png" class="rounded-circle me-3" alt="User Profile" width="40" height="40">
-            <div class="p-3 bg-light rounded-3">
+            <div class="p-3 bg-body-secondary rounded-3">
               <p class="mb-0"><strong>{{ message.senderId.username }}</strong>: {{ message.content }}</p>
               <small class="text-muted">{{ new Date(message.createdAt).toLocaleString('en-US', { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }) }}</small>
             </div>

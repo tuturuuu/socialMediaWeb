@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html >
   <head>
     <meta name="viewport" content="width=device-width,initial-scale=1.0" />
     <title>Socket.IO chat</title>
@@ -38,13 +38,13 @@
      <script src="framework/js/vue-paginate-next.js"></script>
 
   </head>
-  <body>
+  <body data-bs-theme="light">
     <div id="app">
     <navbar-component :authenticated="authenticated" @authenticated="setAuthenticated"></navbar-component>
-    
     <router-view @authenticated="setAuthenticated"></router-view> 
 
     <footer-component></footer-component>
+
     </div>
   </body>
 </html>

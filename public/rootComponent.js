@@ -9,7 +9,7 @@ import footerComponent from './components/footerComponent.js'
 const app = Vue.createApp({
     data(){
         return{
-            authenticated:false
+            authenticated:false,
         }
     },
     methods: {

@@ -1,12 +1,12 @@
 export default{
     template:`
 <!-- Navbar -->
-<nav class="navbar navbar-expand-lg bg-light navbar-light">
+<nav class="navbar navbar-expand-lg">
   <div class="container">
     <a class="navbar-brand ms-2" href="#">
       <img
         id="MDB-logo"
-        src="https://mdbcdn.b-cdn.net/wp-content/uploads/2018/06/logo-mdb-jquery-small.png"
+        src="static/img/website/logo.png"
         alt="MDB Logo"
         draggable="false"
         height="30"
@@ -53,6 +53,15 @@ export default{
             <i class="fas fa-sign-in-alt pe-2">Sign in</i>
           </router-link>
         </li>
+        <li class="nav-item">
+          <button v-if="theme === 'light'" class="btn btn-outline-primary" @click="changeTheme()">
+            <i class="bi bi-moon-fill"></i>
+          </button>
+          <button v-else class="btn bg-info bg-opacity-75" @click="changeTheme()">
+            <i class="bi bi-sun-fill"></i>
+          </button>
+          
+        </li>
       </ul>
     </div>
   </div>
@@ -63,6 +72,7 @@ export default{
   props: ['authenticated'],
   data() {
     return {
+      theme: 'light',
     }
   },
   methods: {
@@ -70,6 +80,12 @@ export default{
       localStorage.removeItem('token')
       this.$emit('authenticated', false)
       this.$router.push('/login')
+    },
+
+    changeTheme() {
+      const body = document.body;
+      body.setAttribute('data-bs-theme', document.body.getAttribute('data-bs-theme') === 'dark' ? 'light' : 'dark');
+      this.theme = body.getAttribute('data-bs-theme');
     },
     
   }
