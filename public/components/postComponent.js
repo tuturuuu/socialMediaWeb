@@ -53,13 +53,13 @@ export default {
   components: {
     paginate: VuejsPaginateNext
   },
-  props: ["posts", "sortBy", "search"],
-  emits: ["update", "delete"],
+  props: ["sortBy", "search"],
   data() {
     return {
       errors: {
         content: "",
       },
+      posts: [],
       perPage: 3,
       page: 1,
       id: jwt_decode(localStorage.getItem("token")).id,
@@ -68,7 +68,31 @@ export default {
     };
   },
   methods: {
-    updatePost(post) {
+    async createPost(content) {
+      console.log(content)
+
+      try {
+        const response = await fetch("/api/post", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: localStorage.getItem("token"),
+          },
+          body: JSON.stringify({
+            content: content,
+          }),
+        });
+        if (response.ok) {
+          const data = await response.json();
+          this.posts.push(data.post);
+          console.log(this.posts);
+          this.content = "";
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    async updatePost(post) {
       post.editing = false;
       this.errors = {};
 
@@ -83,10 +107,49 @@ export default {
         alert(this.errors.content);
         return;
       }
-      this.$emit("update", post);
+      try {
+        const response = await fetch("/api/post", {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: localStorage.getItem("token"),
+          },
+          body: JSON.stringify({
+            content: post.content,
+            post_id: post._id,
+          }),
+        });
+        if (response.ok) {
+          const data = await response.json();
+          this.content = "";
+        }
+      } catch (error) {
+        console.log(error);
+      }
     },
-    deletePost(post) {
-      this.$emit("delete", post);
+
+    async deletePost(post) {
+      try {
+        const response = await fetch("/api/post", {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: localStorage.getItem("token"),
+          },
+          body: JSON.stringify({
+            post_id: post._id,
+          }),
+        });
+        if (response.ok) {
+          const data = await response.json();
+          const index = this.posts.findIndex((p) => p._id === post._id);
+          if (index !== -1) {
+            this.posts.splice(index, 1);
+          }
+        }
+      } catch (error) {
+        console.log(error);
+      }
     },
     debounceSearch() {
       clearTimeout(this.debounceTimeout); // Clear existing timeout
@@ -144,5 +207,21 @@ export default {
   },
   beforeDestroy() {
     clearTimeout(this.debounceTimeout); // Clean up timeout when component is destroyed
+  },
+
+  async mounted() {
+    try {
+      const response = await fetch("/api/post/all", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: localStorage.getItem("token"),
+        },
+      });
+      const data = await response.json();
+      this.posts = data;
+    } catch (error) {
+      console.log(error);
+    }
   },
 };

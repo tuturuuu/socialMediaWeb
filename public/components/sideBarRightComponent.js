@@ -39,9 +39,9 @@ export default {
             <ul class="list-unstyled">
               <li v-for="suggestion in suggestions" :key="suggestion._id" class="d-flex align-items-center mb-2">
                 
-                <img v-if="suggestion.gender == 'male'" src="static/img//website/profile_male.png" class="rounded-circle me-3 d-none d-lg-block" alt="User Profile" width="50" height="50">
-                <img v-if="suggestion.gender == 'female'" src="static/img//website/profile_female.png" class="rounded-circle me-3 d-none d-lg-block" alt="User Profile" width="50" height="50">
-                <img v-if="suggestion.gender == 'other' || suggestion.gender == undefined" src="static/img//website/profile_other.png" class="rounded-circle me-3 d-none d-lg-block" alt="User Profile" width="50" height="50">
+                <img v-if="suggestion.gender == 'male'" src="static/img//website/profile_male.png" class="rounded-circle me-3 d-none d-xl-block" alt="User Profile" width="50" height="50">
+                <img v-if="suggestion.gender == 'female'" src="static/img//website/profile_female.png" class="rounded-circle me-3 d-none d-xl-block" alt="User Profile" width="50" height="50">
+                <img v-if="suggestion.gender == 'other' || suggestion.gender == undefined" src="static/img//website/profile_other.png" class="rounded-circle me-3 d-none d-xl-block" alt="User Profile" width="50" height="50">
                
                 <div>
                   <router-link class="mb-0 text-decoration-none" :to="'/detailedUser/' + suggestion._id">{{suggestion.username}}</router-link> <br>
