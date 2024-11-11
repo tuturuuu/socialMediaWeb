@@ -1,7 +1,7 @@
 export default{
     template:`
 <!-- Navbar -->
-<nav class="navbar navbar-expand-lg">
+<nav class="navbar navbar-expand-lg ">
   <div class="container">
     <a class="navbar-brand ms-2" href="#">
       <img
@@ -66,6 +66,7 @@ export default{
     </div>
   </div>
 </nav>
+
 <!-- Navbar -->
 
 `,

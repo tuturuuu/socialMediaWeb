@@ -44,7 +44,7 @@ export default {
                 <img v-if="suggestion.gender == 'other' || suggestion.gender == undefined" src="static/img//website/profile_other.png" class="rounded-circle me-3 d-none d-lg-block" alt="User Profile" width="50" height="50">
                
                 <div>
-                  <h6 class="mb-0">{{ suggestion.username }}</h6>
+                  <router-link class="mb-0 text-decoration-none" :to="'/detailedUser/' + suggestion._id">{{suggestion.username}}</router-link> <br>
                   <small class="text-muted">@{{ suggestion.username }}</small>
                 </div>
                

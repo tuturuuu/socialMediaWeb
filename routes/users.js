@@ -65,6 +65,31 @@ router.get("/profile", auth, async (req, res) => {
   }
 });
 
+// Read other user
+router.get("/profile/:id", auth, async (req, res) => {
+  const { id } = req.params;
+  const { id: userId } = req.user;
+  try {
+    const user = await Users.findById(id, "username email age gender birthday bio _id").lean();
+    if (!user) {
+      return res.status(400).json({ message: "User not found" });
+    }
+
+    const theUser = await Users.findById(userId);
+    if(theUser.friends.includes(id)){
+      user.isFriend = true;
+    }
+    else{
+      user.isFriend = false;
+    }
+
+    return res.status(200).json(user);
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+});
+
+
 // Update user
 router.put("/profile", auth, async (req, res) => {
   const { id } = req.user;

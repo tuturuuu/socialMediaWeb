@@ -5,6 +5,7 @@ import LoginView from './views/LoginView.js'
 import Home from './views/HomeView.js'
 import ProfileView from './views/ProfileView.js'
 import footerComponent from './components/footerComponent.js'
+import DetailedUserView from './views/DetailedUserView.js'
 
 const app = Vue.createApp({
     data(){
@@ -32,6 +33,7 @@ app.component('navbar-component', navBarComponent)
 app.component('footer-component', footerComponent)
 
 const routes = [
+    { path: '/detailedUser/:id', component: DetailedUserView, meta: { requiresAuth: true } },
     { path: '/chatting', component: ChattingView, meta: { requiresAuth: true } },
     { path: '/register', component: RegisterView },
     { path: '/', component: Home, meta: { requiresAuth: true } },

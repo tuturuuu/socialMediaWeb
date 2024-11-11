@@ -40,7 +40,9 @@
   </head>
   <body data-bs-theme="light">
     <div id="app">
+
     <navbar-component :authenticated="authenticated" @authenticated="setAuthenticated"></navbar-component>
+    
     <router-view @authenticated="setAuthenticated"></router-view> 
 
     <footer-component></footer-component>
