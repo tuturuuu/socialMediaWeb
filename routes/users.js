@@ -129,7 +129,7 @@ router.get("/suggestions/:limit", auth, async (req, res) => {
   const limit = parseInt(req.params.limit, 10);
   const { id } = req.user;
   try {
-    const users = await Users.find({}, "username gender id")
+    const users = await Users.find({ _id: { $ne: id } }, "username gender id")
       .limit(limit)
       .lean();
     const theUser = await Users.findById(id);
