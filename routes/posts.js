@@ -5,14 +5,19 @@ const Posts = require("../models/Posts");
 const auth = require("../middleware/auth");
 
 router.get("/all", auth, async (req, res) => {
+  const { id } = req.user;
   try {
-    const posts = await Posts.find()
+    const user = await Users.findById(id).populate("friends", ["_id"]);
+    const friendsIds = user.friends.map(friend => friend._id);
+    friendsIds.push(id); // Include the user's own ID to fetch their posts as well
+    const posts = await Posts.find({ userId: { $in: friendsIds } })
       .populate("userId", ["username", "gender"]);
     return res.status(200).json(posts);
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
 });
+
 
 router.post("", auth, async (req, res) => {
   const { id } = req.user;
