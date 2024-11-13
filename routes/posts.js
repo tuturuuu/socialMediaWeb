@@ -29,6 +29,8 @@ router.post("", auth, async (req, res) => {
     }
     const newPost = new Posts({ content, userId: id });
     await newPost.save();
+    user.posts.push(newPost._id);
+    await user.save();
     const populatedNewPost = await newPost.populate("userId", ["username", "gender"]);
     return res.status(200).json({ message: "Post created successfully", post: populatedNewPost });
   } catch (error) {

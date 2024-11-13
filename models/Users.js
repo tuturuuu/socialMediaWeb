@@ -12,8 +12,10 @@ const userSchema = new mongoose.Schema({
     "updatedAt": {type: Date, default: Date.now},
     "posts": [{type: mongoose.Schema.Types.ObjectId, ref: 'Post'}],
     "friends": [{type: mongoose.Schema.Types.ObjectId, ref: 'User'}],
+    "messages": [{type: mongoose.Schema.Types.ObjectId, ref: 'Message'}],
 });
 
 const Users = mongoose.model('User', userSchema);
 
 module.exports = Users;
+

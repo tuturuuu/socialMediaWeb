@@ -2,6 +2,8 @@ const express = require("express");
 const router = express.Router();
 const jwt = require("jsonwebtoken");
 const Users = require("../models/Users");
+const Posts = require("../models/Posts");
+const Messages = require("../models/Messages")
 const auth = require("../middleware/auth");
 const bcrypt = require("bcryptjs");
 
@@ -116,7 +118,13 @@ router.delete("/profile", auth, async (req, res) => {
   try {
     const user = await Users.findById(id);
 
-    
+    // Delete all the messages
+    await Messages.deleteMany({ senderId: id });
+
+    // Delete all the posts
+    await Posts.deleteMany({ userId: id});
+
+
     if (!user) {
       return res.status(400).json({ message: "User not found" });
     }

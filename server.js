@@ -5,6 +5,7 @@ const { createServer } = require("node:http");
 const { join } = require("node:path");
 const { Server } = require("socket.io");
 const Messages = require("./models/Messages")
+const Users = require("./models/Users");
 const app = express();
 const server = createServer(app);
 const userRoutes = require("./routes/users");
@@ -64,7 +65,13 @@ io.on("connection", async (socket) => {
     try {
       const message = new Messages({ content: msg, senderId: id });
       await message.save();
+
       result = await message.populate("senderId", ['username', 'gender'])
+      
+      const user = await Users.findById(id);
+      user.messages.push(message._id);
+      await user.save();
+
     } catch (e) {
       console.log(e)
       return;
