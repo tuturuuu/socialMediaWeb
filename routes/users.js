@@ -115,6 +115,8 @@ router.delete("/profile", auth, async (req, res) => {
   const { id } = req.user;
   try {
     const user = await Users.findById(id);
+
+    
     if (!user) {
       return res.status(400).json({ message: "User not found" });
     }

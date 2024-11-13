@@ -48,8 +48,8 @@ export default {
                   <small class="text-muted">@{{ suggestion.username }}</small>
                 </div>
                
-                <button v-if="suggestion.isFriend" class="btn btn-primary btn-sm ms-auto" @click="unfollow(suggestion._id)">Unfollow</button>
-                <button v-else class="btn btn-primary btn-sm ms-auto" @click="follow(suggestion._id)">Follow</button>
+                <button v-if="suggestion.isFriend" class="btn btn-primary btn-sm ms-auto d-xl-block" @click="unfollow(suggestion._id)">Unfollow</button>
+                <button v-else class="btn btn-primary btn-sm ms-auto d-xl-block" @click="follow(suggestion._id)">Follow</button>
               </li>
               <!-- More suggestions here -->
             </ul>

@@ -19,7 +19,7 @@ export default {
       </div>
 
       <!-- Chat View -->
-      <div class="col-12 col-md-8 col-lg-9 h-100 overflow-auto" style="max-height: 80vh;" ref="chatView">
+      <div class="col-12 col-md-8 col-lg-9 h-100 overflow-auto"  ref="chatView" id="chatView">
         
       <div class="border-bottom p-3 d-flex align-items-center">
           <img src="static/img//website/profile_other.png" class="rounded-circle me-3" alt="Chatting with" width="40" height="40">
