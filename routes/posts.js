@@ -19,16 +19,20 @@ router.get("/all", auth, async (req, res) => {
 });
 
 
-router.post("", auth, async (req, res) => {
+router.post("/", auth, async (req, res) => {
   const { id } = req.user;
   const { content } = req.body;
   try {
+
     const user = await Users.findById(id);
     if (!user) {
       return res.status(400).json({ message: "User not found" });
     }
+    console.log(id)
+
     const newPost = new Posts({ content, userId: id });
     await newPost.save();
+
     user.posts.push(newPost._id);
     await user.save();
     const populatedNewPost = await newPost.populate("userId", ["username", "gender"]);
