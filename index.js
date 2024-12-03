@@ -16,17 +16,17 @@ const roomRoutes = require("./routes/rooms");
 // Middleware
 app.use(express.json());
 
-//Serve static file
-app.use(express.static(path.join(__dirname, 'dist')));
-
-app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, 'dist', 'index.html'));
-});
-
 // Routes
 app.use('/api/user', userRoutes);
 app.use('/api/post', postRoutes);
 app.use('/api/room', roomRoutes);
+
+//Serve static file
+app.use(express.static(path.join(__dirname, 'dist')));
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, 'dist', 'index.html'));
+});
 
 // Start the server
 const PORT = process.env.PORT;
