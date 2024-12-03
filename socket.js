@@ -5,10 +5,10 @@ const Room = require("./models/Rooms");
 module.exports = (server) => {
   const io = new Server(server, {
     connectionStateRecovery: false,
-    cors: {
-      origin: "http://localhost:5173",
-      methods: ["GET", "POST", "PUT", "DELETE"],
-    },
+    // cors: {
+    //   origin: "http://localhost:5173",
+    //   methods: ["GET", "POST", "PUT", "DELETE"],
+    // },
   });
 
   io.on("connection", async (socket) => {
