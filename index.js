@@ -11,7 +11,12 @@ const {v4: uuidv4} = require('uuid')
 const path = require('path');
 
 const {PeerServer} = require('peer')
-const peerServer = PeerServer({port: 3001, path: '/'});
+const peerServer = PeerServer({port: 3001, path: '/',
+  corsOptions: {
+    origin: 'https://socialmediaweb-jb1b.onrender.com',
+    methods: ['GET', 'POST', 'PUT', 'DELETE']
+  }
+});
 
 const userRoutes = require("./routes/users");
 const postRoutes = require("./routes/posts");
@@ -24,8 +29,6 @@ app.use(express.json());
 app.use('/api/user', userRoutes);
 app.use('/api/post', postRoutes);
 app.use('/api/room', roomRoutes);
-
-
 
 
 // Start the server
