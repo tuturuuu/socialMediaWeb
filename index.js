@@ -12,10 +12,10 @@ const path = require('path');
 
 const {PeerServer} = require('peer')
 const peerServer = PeerServer({port: 3001, path: '/',
-  corsOptions: {
-    origin: 'https://socialmediaweb-jb1b.onrender.com',
-    methods: ['GET', 'POST', 'PUT', 'DELETE']
-  }
+  cors: {
+    origin: ['http://localhost:3000', 'https://socialmediaweb-jb1b.onrender.com'],
+    methods: ["GET", "POST", "PUT", "DELETE"],
+  },
 });
 
 const userRoutes = require("./routes/users");
