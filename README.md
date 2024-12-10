@@ -8,7 +8,7 @@ The bare minimum for a social media.
 - Video call
 - Real time chatting
 # HOW TO RUN
-- I hosted the website on this link: https://socialmediaweb-jb1b.onrender.com
+- I hosted the website on this link: https://socialmediaweb-jb1b.onrender.com (may need to wait for more than 50 seconds because im on free tier :<)
 ## To run locally:
 - Clone the git repo, enter the PORT, MONGO_URI and JWT_SECRET
 - npm i
