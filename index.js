@@ -6,8 +6,12 @@ const { Server } = require("socket.io");
 const app = express();
 const server = createServer(app);
 const io = require("./socket")(server); // Import socket logic
+const {v4: uuidv4} = require('uuid')
 
 const path = require('path');
+
+const {PeerServer} = require('peer')
+const peerServer = PeerServer({port: 3001, path: '/'});
 
 const userRoutes = require("./routes/users");
 const postRoutes = require("./routes/posts");
@@ -21,12 +25,8 @@ app.use('/api/user', userRoutes);
 app.use('/api/post', postRoutes);
 app.use('/api/room', roomRoutes);
 
-//Serve static file
-app.use(express.static(path.join(__dirname, 'dist')));
 
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, 'dist', 'index.html'));
-});
+
 
 // Start the server
 const PORT = process.env.PORT;
@@ -40,3 +40,9 @@ mongoose
   .then(() => console.log("Connected to MongoDB"))
   .catch((error) => console.error("Error connecting to MongoDB:", error));
 
+//Serve static file
+app.use(express.static(path.join(__dirname, 'dist')));
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, 'dist', 'index.html'));
+});

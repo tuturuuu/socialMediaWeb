@@ -205,17 +205,19 @@ router.post("/follow/:friend_id", auth, async (req, res) => {
     }
     user.friends.push(friend._id);
 
-    const roomName = `${user.username} & ${friend.username}`;
-    const room = await Room.create({
-      name: roomName,
-      users: [id, friend._id],
-    });
-    await room.save();''
+    if (friend.friends.includes(id)) {
+      const roomName = `${friend.username} & ${user.username}`;
+      const room = await Room.create({
+        name: roomName,
+        users: [id, friend._id],
+      });
+      await room.save();
 
-    user.rooms.push(room._id);
+      user.rooms.push(room._id);
+    }
 
     await user.save();
-    return res.status(200).json({ message: "Friend added successfully" });
+    return res.status(200).json({ message: "Friend added successfully"});
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
